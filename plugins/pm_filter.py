@@ -1,5 +1,9 @@
 # Codeded By @Tamilan_BotsZ
+import os
+from os import getenv
 import asyncio
+import time
+from time import sleep as tamilanbotsz_sleep
 import re
 import ast
 import math
@@ -32,6 +36,7 @@ logger.setLevel(logging.ERROR)
 BUTTONS = {}
 SPELL_CHECK = {}
 FILTER_MODE = {}
+tamilanbots_dlt_time = int(getenv("MSG_DLT_TIME"))
 
 @Client.on_message(filters.command('autofilter'))
 async def fil_mod(client, message): 
@@ -167,6 +172,9 @@ async def advantage_spoll_choker(bot, query):
              await asyncio.sleep(30)
              await k.delete()
 
+
+asleep = tamilanbotsz_sleep
+sleep = tamilanbots_dlt_time
 
 
 @Client.on_callback_query()
@@ -388,7 +396,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 return
             else:
                 g = short_url(f"https://t.me/{temp.U_NAME}?start={ident}_{file_id}")
-                await client.send_photo(chat_id=query.from_user.id, photo='https://graph.org/file/f7f173057c2b76940c79c.jpg', caption = f"<b>📕Nᴀᴍᴇ ➠ : <code>{files.file_name}</code> \n\n🔗Sɪᴢᴇ ➠ : {get_size(files.file_size)}</b>", 
+                post = await client.send_photo(chat_id=query.from_user.id, photo='https://graph.org/file/f7f173057c2b76940c79c.jpg', caption = f"<b>📕Nᴀᴍᴇ ➠ : <code>{files.file_name}</code> \n\n🔗Sɪᴢᴇ ➠ : {get_size(files.file_size)}</b>\n\n\nNᴏᴛᴇ : Tʜɪs Mᴇssᴀɢᴇ Wɪʟʟ Bᴇ Dᴇʟᴇᴛᴇᴅ Iɴ Sᴇᴄᴏɴᴅs Tᴏ Aᴠᴏɪᴅ Cᴏᴩʏʀɪɢʜᴛ,\nYᴏᴜ Cᴀɴ Fᴏʀᴡᴀʀᴅ Tʜɪs Tᴏ Sᴀᴠᴇᴅ Mᴇssᴀɢᴇs Oʀ Sᴏᴍᴇᴡʜᴇʀᴇ Eʟsᴇ", 
                                           reply_markup=InlineKeyboardMarkup(
             [
                 [
@@ -398,6 +406,10 @@ async def cb_handler(client: Client, query: CallbackQuery):
                     InlineKeyboardButton('📂 Dᴏᴡɴʟᴏᴀᴅ Nᴏᴡ 📂', url=g)
                 ]]))
                 await query.answer('Cʟɪᴄᴋ °Cʜᴇᴄᴋ Bᴏᴛ Pᴍ° Bᴜᴛᴛᴏɴ\n\nI Sᴇɴᴛᴇᴅ U ASᴋᴇᴅ Fɪʟᴇs', show_alert=True)
+                chat_id = query.from_user.id
+                msg_id = post.message_id
+                asleep(sleep)
+                client.delete_messages(chat_id=chat_id, message_id=msg_id)
         except UserIsBlocked:
             await query.answer('Fɪʀsᴛ Sᴛᴀʀᴛ Mᴇ Tʜᴇɴ I Wɪʟʟ Sᴇɴᴅ Fɪʟᴇs !', show_alert=True)
         except PeerIdInvalid:
