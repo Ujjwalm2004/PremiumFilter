@@ -1,4 +1,7 @@
 import os
+from os import getenv
+import time 
+from time import sleep as tamilanbotsz_sleep
 import logging
 import random
 import asyncio
@@ -17,6 +20,7 @@ import base64
 logger = logging.getLogger(__name__)
 
 BATCH_FILES = {}
+tamilanbotsz_dlt_time = int(getenv("FILE_DELETE_TIME"))
 
 @Client.on_message(filters.command("start") & filters.incoming)
 async def start(client, message):
@@ -249,6 +253,8 @@ async def start(client, message):
     title = files.file_name
     size=get_size(files.file_size)
     f_caption=files.caption
+    asleep = tamilanbotsz_dlt_time
+    sleep = tamilanbotsz_sleep
     if CUSTOM_FILE_CAPTION:
         try:
             f_caption=CUSTOM_FILE_CAPTION.format(file_name= '' if title is None else title, file_size='' if size is None else size, file_caption='' if f_caption is None else f_caption)
@@ -257,13 +263,16 @@ async def start(client, message):
             f_caption=f_caption
     if f_caption is None:
         f_caption = f"{files.file_name}"
-    await client.send_cached_media(
+    msg = await client.send_cached_media(
         chat_id=message.from_user.id,
         file_id=file_id,
         caption=f_caption,
         reply_markup=InlineKeyboardMarkup( [ [ InlineKeyboardButton('🚸 ᴅᴇʟᴇᴛᴇ', callback_data='close_data') ] ] ),
         protect_content=True if pre == 'filep' else False,
         )
+    message_id = message.message_id
+    await sleep(asleep)
+    await client.delete_messages(chat_id=message.from_user.id,, message_id=message_id)
                     
 
 @Client.on_message(filters.command('channel') & filters.user(ADMINS))
